@@ -1,0 +1,128 @@
+# --- CONFIGURACIÓN DARK-ARCH i3 (PATCHED V5 - FINAL CLEAN) ---
+
+set $mod Mod4
+# Unificamos fuente principal del sistema
+font pango:JetBrainsMono Nerd Font Bold 10
+
+# --- TERMINAL Y LANZADORES (TASK 2: FUENTE UNIFICADA) ---
+bindsym $mod+Return exec kitty
+# Lanzador Principal
+bindsym $mod+d exec --no-startup-id rofi -show drun -font "JetBrainsMono Nerd Font Bold 11" -theme ~/.config/rofi/soviet.rasi
+# Power Menu (Asegúrate de que el script use la misma fuente como hablamos)
+bindsym $mod+q exec --no-startup-id ~/.config/i3/scripts/powermenu.sh
+
+# --- GESTIÓN DE VENTANAS ---
+bindsym $mod+Shift+q kill
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# --- RECARGAR Y REINICIAR ---
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+e restart
+
+# --- DISEÑO (ESTILO QUIRÚRGICO) ---
+smart_borders on
+default_border pixel 2
+default_floating_border pixel 2
+for_window [class="^.*"] border pixel 2
+
+# --- GAPS (AJUSTE PARA PANTALLA 1366x768) ---
+gaps inner 4
+gaps outer 0
+gaps bottom 0
+
+# --- COLORES CYBERPUNK (MANTENIENDO ROJO) ---
+set $red_alert  #ff003c
+set $bg_dark    #0a0f14
+set $bg_alt     #101820
+set $fg_text    #c5d1d9
+set $muted      #4b5b63
+
+client.focused          $red_alert $bg_dark $fg_text $red_alert $red_alert
+client.focused_inactive $bg_alt $bg_alt $fg_text $muted $bg_alt
+client.unfocused        $bg_dark $bg_dark $muted $bg_dark $bg_dark
+client.urgent           #39ff14 #39ff14 #000000 #39ff14 #39ff14
+
+# --- LÓGICA DE BARRA TEMPORAL ---
+set $show_bottom_bar exec --no-startup-id "polybar-msg -p $(pgrep -f 'polybar bottom') cmd show; sleep 5; polybar-msg -p $(pgrep -f 'polybar bottom') cmd hide"
+
+# --- WORKSPACES ---
+set $ws1 "1: TERM"
+set $ws2 "2: WEB"
+set $ws3 "3: DEV"
+set $ws4 "4: AUDIT"
+set $ws5 "5: SOCIAL"
+set $ws6 "6: R&D"
+set $ws7 "7: NETS"
+set $ws8 "8: VM"
+set $ws9 "9: MEDIA"
+set $ws10 "10: SYS"
+
+# Binds con disparador de barra
+bindsym $mod+1 workspace number $ws1; $show_bottom_bar
+bindsym $mod+2 workspace number $ws2; $show_bottom_bar
+bindsym $mod+3 workspace number $ws3; $show_bottom_bar
+bindsym $mod+4 workspace number $ws4; $show_bottom_bar
+bindsym $mod+5 workspace number $ws5; $show_bottom_bar
+bindsym $mod+6 workspace number $ws6; $show_bottom_bar
+bindsym $mod+7 workspace number $ws7; $show_bottom_bar
+bindsym $mod+8 workspace number $ws8; $show_bottom_bar
+bindsym $mod+9 workspace number $ws9; $show_bottom_bar
+bindsym $mod+0 workspace number $ws10; $show_bottom_bar
+
+# Mover contenedores
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# --- AUTOARRANQUE ---
+exec_always --no-startup-id feh --bg-fill /home/xoce/Pictures/wallpaper_hd.png
+exec_always --no-startup-id picom -b
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id setxkbmap -layout us,latam,br,ru -option 'grp:alt_shift_toggle'
+exec_always --no-startup-id autotiling
+exec_always --no-startup-id caffeine
+
+# --- REGLAS DE VENTANAS ---
+for_window [class="kitty"] move to workspace $ws1
+for_window [class="Google-chrome|firefox"] move to workspace $ws2
+for_window [class="Code|Sublime_text"] move to workspace $ws3
+for_window [class="Burp Suite Professional|burp-StartBurp"] move to workspace $ws4
+for_window [class="Polybar" instance="bottom"] floating enable, border pixel 0, sticky enable, focus_follows_mouse no
+
+# --- MONITOR PARED (RED TEAM SETUP) ---
+bindsym $mod+F7 exec --no-startup-id ~/.config/i3/display_toggle.sh
+workspace 9 output HDMI-A-0
+workspace 10 output HDMI-A-0
+bindsym $mod+Shift+Up move workspace to output up
+bindsym $mod+Shift+Down move workspace to output down
+
+# --- ATAJOS RÁPIDOS ---
+bindsym $mod+f exec firefox
+bindsym $mod+c exec google-chrome-stable
+bindsym $mod+b exec burpsuite
+bindsym $mod+v exec code
+bindsym $mod+s exec subl
+bindsym $mod+l exec betterlockscreen -l blur
+bindsym Print exec --no-startup-id flameshot gui
+
+# --- AUDIO Y BRILLO ---
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+
+# --- SEGURIDAD ---
+exec_always --no-startup-id xss-lock -- betterlockscreen -l
+exec_always --no-startup-id xset s 300 300
+exec_always --no-startup-id xset dpms 600 600 600

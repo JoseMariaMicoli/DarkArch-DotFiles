@@ -1,0 +1,82 @@
+configuration {
+    display-drun: "   IDENTIFY:";
+    display-run: "   EXECUTE:";
+    show-icons: true;
+    /* TASK: Fuente unificada */
+    font: "JetBrainsMono Nerd Font Bold 11";
+}
+
+* {
+    /* Fondo oscuro y acento en ÁMBAR por defecto */
+    background-color: #0f111a;
+    text-color: #ffb800; 
+}
+
+window {
+    /* TASK: Centrado y tamaño 30% como la barra */
+    width: 30%;
+    border: 2px;
+    border-color: #ffb800; /* Borde en Ámbar */
+    border-radius: 12px;
+    padding: 15px;
+}
+
+listview {
+    lines: 8;
+    spacing: 5px;
+    scrollbar: false;
+    fixed-height: true;
+    background-color: transparent;
+}
+
+element {
+    padding: 8px;
+    border-radius: 6px;
+    background-color: transparent;
+    text-color: #ffb800; /* Texto en Ámbar */
+}
+
+/* EFECTO SELECCIÓN: Rojo sobre negro al navegar */
+element selected {
+    background-color: #ff003c; /* ROJO de selección */
+    text-color: #0f111a;       /* Texto oscuro para contraste */
+}
+
+element-icon {
+    size: 24px;
+    padding: 0px 10px 0px 0px;
+    background-color: transparent;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit; /* Hereda ámbar o negro según selección */
+    vertical-align: 0.5;
+}
+
+inputbar {
+    children: [ "icon-search", "prompt", "entry" ];
+    margin: 0px 0px 10px 0px;
+    background-color: transparent;
+}
+
+icon-search {
+    expand: false;
+    filename: "/home/xoce/Images/Ghost-Hydra-Icons/android-chrome-512x512.png";
+    size: 32px;
+    vertical-align: 0.5;
+}
+
+prompt {
+    padding: 8px;
+    background-color: #ffb800; /* Prompt en Ámbar */
+    text-color: #0f111a;
+    border-radius: 4px;
+}
+
+entry {
+    padding: 8px;
+    text-color: #ffb800; /* Entrada de texto en Ámbar */
+    placeholder: " SCANNING SYSTEM...";
+    placeholder-color: #443300;
+}
